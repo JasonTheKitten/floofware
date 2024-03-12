@@ -11,6 +11,6 @@ local arrayanim = require("arrayanim")
 arrayanim.loadMonitorArray("floor", loadConfig().floor)
 
 --arrayanim.runAnimation("floor", loadfile("floor_animations/celebration.lua")("New High\nScore!")())
-arrayanim.runAnimation("floor", loadfile("floor_animations/idle_1.lua")()())
+arrayanim.runAnimation("floor", loadfile("floor_animations/idle_2.lua")()())
 
 require("event").loop()

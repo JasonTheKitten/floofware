@@ -8,6 +8,9 @@ local function registerMonitorArray(name, monitorArray)
         cell = function(x, y)
             return monitorArray[y][x]
         end,
+        hasCell = function(x, y)
+            return x >= 1 and x <= #monitorArray[1] and y >= 1 and y <= #monitorArray
+        end,
         width = function()
             return #monitorArray[1]
         end,
@@ -30,6 +33,9 @@ local function loadMonitorArray(name, config)
 end
 
 local function runAnimation(name, animation)
+    if animation.setup then
+        animation:setup(monitorArrays[name])
+    end
     runningAnimations[name] = animation
 end
 
