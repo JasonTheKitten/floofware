@@ -1,3 +1,5 @@
+local NUM_TICKS = 100
+
 local function columnInvoke(monArray, column, func, ...)
     for i = 1, monArray.height() do
         monArray.cell(column, i)[func](...)
@@ -39,14 +41,16 @@ function animationProto:tick(monArray)
         gradientRow(36 - self._stage, monArray.width())
     updateMonitors(monArray, row)
     self._stage = (self._stage + 1) % 36
+    self._ticks = self._ticks + 1
 end
 function animationProto:finished()
-    return false
+    return self._ticks >= NUM_TICKS
 end
 
 local function createAnimation()
     return setmetatable({
-        _stage = 0
+        _stage = 0,
+        _ticks = 0
     }, {__index = animationProto})
 end
 

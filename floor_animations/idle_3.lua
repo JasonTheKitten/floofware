@@ -1,4 +1,4 @@
-local NUM_TICKS = 10000
+local NUM_TICKS = 100
 local TICKS_PER_CYCLE = 10
 
 local colorList = {

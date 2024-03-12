@@ -2,6 +2,7 @@ local event = require("event")
 
 local monitorArrays = {}
 local runningAnimations = {}
+local finishedListeners = {}
 
 local function registerMonitorArray(name, monitorArray)
     monitorArrays[name] = {
@@ -32,6 +33,13 @@ local function loadMonitorArray(name, config)
     registerMonitorArray(name, monitorArray)
 end
 
+local function addFinishedListener(name, listener)
+    if not finishedListeners[name] then
+        finishedListeners[name] = {}
+    end
+    table.insert(finishedListeners[name], listener)
+end
+
 local function runAnimation(name, animation)
     if animation.setup then
         animation:setup(monitorArrays[name])
@@ -43,6 +51,9 @@ event.on("frame", function()
     for name, animation in pairs(runningAnimations) do
         if animation:finished() then
             runningAnimations[name] = nil
+            for _, listener in ipairs(finishedListeners[name] or {}) do
+                listener()
+            end
         else
             animation:tick(monitorArrays[name])
         end
@@ -52,5 +63,6 @@ end)
 return {
     registerMonitorArray = registerMonitorArray,
     loadMonitorArray = loadMonitorArray,
-    runAnimation = runAnimation
+    runAnimation = runAnimation,
+    addFinishedListener = addFinishedListener
 }

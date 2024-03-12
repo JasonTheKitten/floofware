@@ -7,10 +7,27 @@ local function loadConfig()
     return config
 end
 
-local arrayanim = require("arrayanim")
-arrayanim.loadMonitorArray("floor", loadConfig().floor)
+local config = loadConfig()
 
---arrayanim.runAnimation("floor", loadfile("floor_animations/celebration.lua")("New High\nScore!")())
-arrayanim.runAnimation("floor", loadfile("floor_animations/idle_3.lua")()())
+local arrayanim = require("arrayanim")
+arrayanim.loadMonitorArray("floor", config.floor)
+
+local loadedAnimations = {}
+local function loadAnimation(name)
+    if not loadedAnimations[name] then
+        loadedAnimations[name] = loadfile(name .. ".lua")()
+    end
+    return loadedAnimations[name]
+end
+
+local nextAnimation = 0
+local function playNextAnimation()
+    local animation = loadAnimation(config.floor_idle_animations[nextAnimation + 1])()
+    arrayanim.runAnimation("floor", animation)
+    nextAnimation = (nextAnimation + 1) % #config.floor_idle_animations
+end
+
+arrayanim.addFinishedListener("floor", playNextAnimation)
+playNextAnimation()
 
 require("event").loop()
