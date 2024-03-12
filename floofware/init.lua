@@ -1,7 +1,7 @@
-package.path = package.path .. ";/fluffware/lib/?.lua;/fluffware/lib/?/init.lua"
+package.path = package.path .. ";/floofware/lib/?.lua;/floofware/lib/?/init.lua"
 
 local function loadConfig()
-    local file = fs.open("fluff.cfg", "r")
+    local file = fs.open("floof.cfg", "r")
     local config = textutils.unserialize(file.readAll())
     file.close()
     return config
